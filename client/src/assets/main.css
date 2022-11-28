@@ -1,0 +1,105 @@
+@import "./base.css";
+
+body {
+  width: 100%;
+  background-color: var(--background-color);
+  color: var(--text-color);
+  font-family: "Cairo", sans-serif;
+  margin: 0;
+  padding: 0;
+  direction: rtl;
+}
+.ground{
+  width:95%;
+  display:block;
+  margin-right:auto;
+  margin-left:auto;
+}
+a.router-link-active{
+  background-color:#E0A82E;
+  color: #1F262A
+}
+
+.navbar{
+  background-color: var(--background-header);
+}
+
+.button_ground{
+  background-color: var(--button-color);
+  color:#333333;
+}
+.card_ground{
+  background-color: var(--card-ground);
+}
+.sub_text{
+  color: var(--sub-text-color);
+}
+.number_card{
+  color:#54595C;
+}
+.icon_card{
+  background-color: var(--icon_card);
+}
+.line_ground{
+  background-color:var(--line-ground);
+}
+  
+.title_ground{
+  color:var(--title-color);
+}
+.des_ground{
+  color:#9FA0A1;
+}
+.border_card{
+  border-color:var(--border-card);
+}
+.footer{
+  background-color: var(--background-header);
+}
+
+.table_ground{
+  background-color: var(--table-color);
+}
+.tabs a{
+  background-color:#f1f5f8;
+  color: #484848;
+}
+.tabs a.active {
+  background-color:var(--button-color);
+  color: #484848;
+  border: none;
+  cursor: default;
+}
+  
+  /* main.css */
+:root {
+  /* Variables for default theme (light-mode) */
+  --background-color: #E6E6E6;
+  --background-header:#181818;
+  --button-color: #E0A82E;
+  --text-color: #333333; 
+  --sub-text-color: #1f2937;
+  --title-color: #171C1F; 
+
+  --card-ground: #ffffff;
+  --icon_card:#FCD34D;
+  --line-ground: #E0A82E;
+  --border-card:#181818;
+  --table-color: #E6E6E6;
+}
+
+[data-theme="darkMode"] {
+  /* Variables for dark mode */
+  --background-color: #171C1F;
+  --background-header:#1F262A;
+  --button-color: #E0A82E;
+  --text-color: white;  
+  --sub-text-color: #9ca3af;
+  --title-color: #FCD34D;
+ 
+  --card-ground: #1F262A;
+  --icon_card:#FCD34D;
+  --line-ground: #E0A82E;
+  --border-card:#e2e8f0;
+  --table-color: #1F262A;
+}

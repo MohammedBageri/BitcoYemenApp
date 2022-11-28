@@ -1,0 +1,9 @@
+:root {
+    --color-bg-primary: rgb(200, 133, 255);
+    --color-text-primary: rgb(50, 50, 50);
+    }
+    
+    .dark {
+    --color-bg-primary: rgb(112, 38, 173);
+    --color-text-primary: rgb(200, 200, 200);
+    }

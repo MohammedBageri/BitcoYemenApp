@@ -1,0 +1,2239 @@
+openapi: 3.0.0
+info:
+  title: BitcoYemen API
+  contact: {}
+  version: "V1.2"
+servers:
+  - url: https://bitco-ye.onrender.com/api/v1
+    variables: {}
+  - url: https://bitco-ye.herokuapp.com/api/v1
+    variables: {}
+  - url: http://localhost:5000/api/v1
+    variables: {}
+paths:
+  /auth/register:
+    post:
+      tags:
+        - Auth
+      summary: Register User
+      operationId: RegisterUser
+      parameters: []
+      requestBody:
+        content:
+          multipart/form-data:
+            encoding: {}
+            schema:
+              required:
+                - image
+                - name
+                - email
+                - password
+                - phoneNumber
+                - address
+                - affiliateRef
+              type: object
+              properties:
+                image:
+                  type: string
+                  format: binary
+                name:
+                  type: string
+                  example: Mohammed
+                email:
+                  type: string
+                  example: test3@test.com
+                password:
+                  type: integer
+                  format: int32
+                  example: 123456
+                phoneNumber:
+                  type: integer
+                  format: int32
+                  example: 741258963
+                address:
+                  type: string
+                  example: asd zxc
+                affiliateRef:
+                  type: string
+                  example: 62f28989f247cf3b0bda5347
+        required: false
+      responses:
+        "200":
+          description: ""
+          headers: {}
+      deprecated: false
+      security: []
+  /auth/login:
+    post:
+      tags:
+        - Auth
+      summary: Login User
+      operationId: LoginUser
+      parameters: []
+      requestBody:
+        description: ""
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: "#/components/schemas/LoginUserRequest"
+                - example:
+                    email: test@test.com
+                    password: "123456"
+            example:
+              email: test@test.com
+              password: "123456"
+        required: true
+      responses:
+        "200":
+          description: ""
+          headers: {}
+      deprecated: false
+      security: []
+  /auth/logout:
+    delete:
+      tags:
+        - Auth
+      summary: Logout User
+      operationId: LogoutUser
+      parameters: []
+      responses:
+        "200":
+          description: ""
+          headers: {}
+      deprecated: false
+  /auth/verify-email:
+    post:
+      tags:
+        - Auth
+      summary: Verify Email
+      operationId: VerifyEmail
+      parameters: []
+      requestBody:
+        description: ""
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: "#/components/schemas/VerifyEmailRequest"
+                - example:
+                    email: test@test.com
+                    verificationToken: 055ee337407a272f3b393a740013d0ea22338a8da0a7e05293eb60dda836c4007ddd236f00ffadea
+            example:
+              email: test@test.com
+              verificationToken: 055ee337407a272f3b393a740013d0ea22338a8da0a7e05293eb60dda836c4007ddd236f00ffadea
+        required: true
+      responses:
+        "200":
+          description: ""
+          headers: {}
+      deprecated: false
+      security: []
+  /auth/forgot-password:
+    post:
+      tags:
+        - Auth
+      summary: Forgot Password
+      operationId: ForgotPassword
+      parameters: []
+      requestBody:
+        description: ""
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: "#/components/schemas/ForgotPasswordRequest"
+                - example:
+                    email: test@test.com
+            example:
+              email: test@test.com
+        required: true
+      responses:
+        "200":
+          description: ""
+          headers: {}
+      deprecated: false
+      security: []
+  /auth/reset-password:
+    post:
+      tags:
+        - Auth
+      summary: Reset Password
+      operationId: ResetPassword
+      parameters: []
+      requestBody:
+        description: ""
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: "#/components/schemas/ResetPasswordRequest"
+                - example:
+                    token: 4078b45e72746d26a252c834e2cbeadea57f8cd5a37193d964e4405654dfd8c2368b10e566c033966ce48e330db5d0dac82c3efc36c762d7ad59b50a088f1175d965630f8b4c
+                    email: test@test.com
+                    password: "1234567"
+            example:
+              token: 4078b45e72746d26a252c834e2cbeadea57f8cd5a37193d964e4405654dfd8c2368b10e566c033966ce48e330db5d0dac82c3efc36c762d7ad59b50a088f1175d965630f8b4c
+              email: test@test.com
+              password: "1234567"
+        required: true
+      responses:
+        "200":
+          description: ""
+          headers: {}
+      deprecated: false
+      security: []
+  /users:
+    get:
+      tags:
+        - User
+      summary: All Users
+      operationId: AllUsers
+      parameters:
+        - name: page
+          in: query
+          description: ""
+          required: true
+          style: form
+          explode: true
+          schema:
+            type: integer
+            format: int32
+            example: 1
+        - name: limit
+          in: query
+          description: ""
+          required: true
+          style: form
+          explode: true
+          schema:
+            type: integer
+            format: int32
+            example: 2
+        - name: isActive
+          in: query
+          description: ""
+          required: true
+          style: form
+          explode: true
+          schema:
+            type: boolean
+            example: true
+      responses:
+        "200":
+          description: ""
+          headers: {}
+      deprecated: false
+  /users/showMe:
+    get:
+      tags:
+        - User
+      summary: Current User
+      operationId: CurrentUser
+      parameters: []
+      responses:
+        "200":
+          description: ""
+          headers: {}
+      deprecated: false
+  /users/updateUser:
+    patch:
+      tags:
+        - User
+      summary: Update User
+      operationId: UpdateUser
+      parameters: []
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            encoding: {}
+            schema:
+              required:
+                - address
+                - phoneNumber
+              type: object
+              properties:
+                address:
+                  type: string
+                  example: asda
+                phoneNumber:
+                  type: integer
+                  format: int32
+                  example: 7896
+        required: false
+      responses:
+        "200":
+          description: ""
+          headers: {}
+      deprecated: false
+  /users/updateUserPassword:
+    patch:
+      tags:
+        - User
+      summary: Update User Password
+      operationId: UpdateUserPassword
+      parameters: []
+      requestBody:
+        description: ""
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: "#/components/schemas/UpdateUserPasswordRequest"
+                - example:
+                    oldPassword: "123456"
+                    newPassword: "1234567"
+            example:
+              oldPassword: "123456"
+              newPassword: "1234567"
+        required: true
+      responses:
+        "200":
+          description: ""
+          headers: {}
+      deprecated: false
+  /users/updateUser/{id}:
+    parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+        required: true
+        description: The user ID
+    post:
+      tags:
+        - User
+      summary: Update User Admin
+      operationId: UpdateUserAdmin
+      parameters: []
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            encoding: {}
+            schema:
+              required:
+                - address
+                - phoneNumber
+                - name
+                - role
+              type: object
+              properties:
+                address:
+                  type: string
+                  example: asdaa
+                phoneNumber:
+                  type: integer
+                  format: int32
+                  example: 7896
+                name:
+                  type: string
+                  example: Omer
+                role:
+                  type: string
+                  example: user
+        required: false
+      responses:
+        "200":
+          description: ""
+          headers: {}
+      deprecated: false
+  /users/updateUserPassword/{id}:
+    parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+        required: true
+        description: The user ID
+    post:
+      tags:
+        - User
+      summary: Update User Password Admin
+      operationId: UpdateUserPasswordAdmin
+      parameters: []
+      requestBody:
+        description: ""
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: "#/components/schemas/UpdateUserPasswordAdminRequest"
+                - example:
+                    newPassword: "123456"
+            example:
+              newPassword: "123456"
+        required: true
+      responses:
+        "200":
+          description: ""
+          headers: {}
+      deprecated: false
+  /users/{id}:
+    parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+        required: true
+        description: The user ID
+    get:
+      tags:
+        - User
+      summary: GET User
+      operationId: GETUser
+      parameters: []
+      responses:
+        "200":
+          description: ""
+          headers: {}
+      deprecated: false
+  /users/activate/{id}:
+    parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+        required: true
+        description: The user ID
+    post:
+      tags:
+        - User
+      summary: Activate User
+      operationId: ActivateUser
+      parameters: []
+      requestBody:
+        description: ""
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: "#/components/schemas/ActivateUserRequest"
+                - example:
+                    isActive: true
+            example:
+              isActive: true
+        required: true
+      responses:
+        "200":
+          description: ""
+          headers: {}
+      deprecated: false
+  /currency:
+    post:
+      tags:
+        - Currency
+      summary: Add Currency with Logo
+      operationId: AddCurrencywithLogo
+      parameters: []
+      requestBody:
+        content:
+          multipart/form-data:
+            encoding: {}
+            schema:
+              required:
+                - image
+                - name
+                - code
+                - isActive
+              type: object
+              properties:
+                image:
+                  type: string
+                  format: binary
+                name:
+                  type: string
+                  example: Mine
+                code:
+                  type: string
+                  example: MIN
+                isActive:
+                  type: boolean
+                  example: false
+        required: false
+      responses:
+        "200":
+          description: ""
+          headers: {}
+      deprecated: false
+    get:
+      tags:
+        - Currency
+      summary: All Currencies
+      operationId: AllCurrencies
+      parameters: []
+      responses:
+        "200":
+          description: ""
+          headers: {}
+      deprecated: false
+      security: []
+  /currency/{id}:
+    parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+        required: true
+        description: The currency ID
+    post:
+      tags:
+        - Currency
+      summary: Update Currency
+      operationId: UpdateCurrency
+      parameters: []
+      requestBody:
+        content:
+          multipart/form-data:
+            encoding: {}
+            schema:
+              required:
+                - name
+                - code
+                - isActive
+              type: object
+              properties:
+                image:
+                  type: string
+                  format: binary
+                name:
+                  type: string
+                  example: Bitco
+                code:
+                  type: string
+                  example: BCO
+                isActive:
+                  type: boolean
+                  example: false
+        required: false
+      responses:
+        "200":
+          description: ""
+          headers: {}
+      deprecated: false
+  /currency/activate/{id}:
+    parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+        required: true
+        description: The currency ID
+    post:
+      tags:
+        - Currency
+      summary: Activate Currency
+      operationId: ActivateCurrency
+      parameters: []
+      requestBody:
+        description: ""
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: "#/components/schemas/ActivateCurrencyRequest"
+                - example:
+                    isActive: false
+            example:
+              isActive: false
+        required: true
+      responses:
+        "200":
+          description: ""
+          headers: {}
+      deprecated: false
+  /currency/{id_}:
+    parameters:
+      - in: path
+        name: id_
+        schema:
+          type: string
+        required: true
+        description: The currency ID
+    get:
+      tags:
+        - Currency
+      summary: Currency By ID
+      operationId: CurrencyByID
+      parameters: []
+      responses:
+        "200":
+          description: ""
+          headers: {}
+      deprecated: false
+  /direction:
+    post:
+      tags:
+        - Exhange Direction
+      summary: Create Exchange Direction
+      operationId: CreateExchangeDirection
+      parameters: []
+      requestBody:
+        description: ""
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: "#/components/schemas/CreateExchangeDirectionRequest"
+                - example:
+                    from: 62e4c4a5bb77243116e4c386
+                    to: 62e4c4d1bb77243116e4c389
+                    exchangeRate:
+                      send: "1"
+                      receive: "1.05"
+                    minExchange: "100"
+                    maxExchange: "500"
+                    description: " "
+                    isActive: true
+            example:
+              from: 62e4c4a5bb77243116e4c386
+              to: 62e4c4d1bb77243116e4c389
+              exchangeRate:
+                send: "1"
+                receive: "1.05"
+              minExchange: "100"
+              maxExchange: "500"
+              description: " "
+              isActive: true
+        required: true
+      responses:
+        "200":
+          description: ""
+          headers: {}
+      deprecated: false
+    get:
+      tags:
+        - Exhange Direction
+      summary: Exchange Direction
+      operationId: ExchangeDirection
+      parameters:
+        - name: from
+          in: query
+          description: ""
+          required: true
+          style: form
+          explode: true
+          schema:
+            type: string
+            example: 62e4c4a5bb77243116e4c386
+        - name: to
+          in: query
+          description: ""
+          required: true
+          style: form
+          explode: true
+          schema:
+            type: string
+            example: 62ef5af171bf7efa0ec50317
+      responses:
+        "200":
+          description: ""
+          headers: {}
+      deprecated: false
+      security: []
+  /direction/{id}:
+    parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+        required: true
+        description: The direction ID
+    post:
+      tags:
+        - Exhange Direction
+      summary: Update Exchange Direction
+      operationId: UpdateExchangeDirection
+      parameters: []
+      requestBody:
+        description: ""
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: "#/components/schemas/UpdateExchangeDirectionRequest"
+                - example:
+                    from: 62e4c4a5bb77243116e4c386
+                    to: 62ef5af171bf7efa0ec50317
+                    exchangeRate:
+                      send: "1"
+                      receive: "2.05"
+                    minExchange: "100"
+                    maxExchange: "500"
+                    description: " "
+                    isActive: true
+            example:
+              from: 62e4c4a5bb77243116e4c386
+              to: 62ef5af171bf7efa0ec50317
+              exchangeRate:
+                send: "1"
+                receive: "2.05"
+              minExchange: "100"
+              maxExchange: "500"
+              description: " "
+              isActive: true
+        required: true
+      responses:
+        "200":
+          description: ""
+          headers: {}
+      deprecated: false
+  /direction/all:
+    get:
+      tags:
+        - Exhange Direction
+      summary: All Exchange Direction
+      operationId: AllExchangeDirection
+      parameters:
+        - name: page
+          in: query
+          description: ""
+          required: true
+          style: form
+          explode: true
+          schema:
+            type: integer
+            format: int32
+            example: 1
+        - name: limit
+          in: query
+          description: ""
+          required: true
+          style: form
+          explode: true
+          schema:
+            type: integer
+            format: int32
+            example: 10
+      responses:
+        "200":
+          description: ""
+          headers: {}
+      deprecated: false
+  /direction/activate/{id}:
+    parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+        required: true
+        description: The direction ID
+    post:
+      tags:
+        - Exhange Direction
+      summary: Activate Exchange Direction
+      operationId: ActivateExchangeDirection
+      parameters: []
+      requestBody:
+        description: ""
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: "#/components/schemas/ActivateExchangeDirectionRequest"
+                - example:
+                    isActive: true
+            example:
+              isActive: true
+        required: true
+      responses:
+        "200":
+          description: ""
+          headers: {}
+      deprecated: false
+  /transaction:
+    post:
+      tags:
+        - Transaction
+      summary: Create Transaction
+      operationId: CreateTransaction
+      parameters: []
+      requestBody:
+        description: ""
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: "#/components/schemas/CreateTransactionRequest"
+                - example:
+                    from: 62e4c4a5bb77243116e4c386
+                    to: 62e4c4d1bb77243116e4c389
+                    amount: "181"
+            example:
+              from: 62e4c4a5bb77243116e4c386
+              to: 62e4c4d1bb77243116e4c389
+              amount: "181"
+        required: true
+      responses:
+        "200":
+          description: ""
+          headers: {}
+      deprecated: false
+    get:
+      tags:
+        - Transaction
+      summary: User Transactions
+      operationId: UserTransactions
+      parameters: []
+      responses:
+        "200":
+          description: ""
+          headers: {}
+      deprecated: false
+  /transaction/{id}:
+    parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+        required: true
+        description: The transaction ID
+    get:
+      tags:
+        - Transaction
+      summary: Transaction By ID
+      operationId: TransactionByID
+      parameters: []
+      responses:
+        "200":
+          description: ""
+          headers: {}
+      deprecated: false
+  /transaction/adm/{id}:
+    parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+        required: true
+        description: The transaction ID
+    get:
+      tags:
+        - Transaction
+      summary: Transaction By ID Admin
+      operationId: TransactionByIDAdmin
+      parameters: []
+      responses:
+        "200":
+          description: ""
+          headers: {}
+      deprecated: false
+  /transaction/details/{id}:
+    parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+        required: true
+        description: The transaction ID
+    post:
+      tags:
+        - Transaction
+      summary: Add Payment Detials
+      operationId: AddPaymentDetials
+      parameters: []
+      requestBody:
+        content:
+          multipart/form-data:
+            encoding: {}
+            schema:
+              required:
+                - image
+                - paymentDetails
+              type: object
+              properties:
+                image:
+                  type: string
+                  format: binary
+                paymentDetails:
+                  type: string
+                  example: smoidsmc idoidsjfois isdfjoidsjf
+        required: false
+      responses:
+        "200":
+          description: ""
+          headers: {}
+      deprecated: false
+  /transaction/status/{id}:
+    parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+        required: true
+        description: The transaction ID
+    post:
+      tags:
+        - Transaction
+      summary: Change Transaction Status
+      operationId: ChangeTransactionStatus
+      parameters: []
+      requestBody:
+        description: ""
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: "#/components/schemas/ChangeTransactionStatusRequest"
+                - example:
+                    statusCode: 5
+            example:
+              statusCode: 5
+        required: true
+      responses:
+        "200":
+          description: ""
+          headers: {}
+      deprecated: false
+  /transaction/adm:
+    get:
+      tags:
+        - Transaction
+      summary: Transactions Admin
+      operationId: TransactionsAdmin
+      parameters:
+        - name: page
+          in: query
+          description: ""
+          required: true
+          style: form
+          explode: true
+          schema:
+            type: integer
+            format: int32
+            example: 1
+        - name: limit
+          in: query
+          description: ""
+          required: true
+          style: form
+          explode: true
+          schema:
+            type: integer
+            format: int32
+            example: 10
+      responses:
+        "200":
+          description: ""
+          headers: {}
+      deprecated: false
+  /product:
+    post:
+      tags:
+        - Product
+      summary: Create Product
+      operationId: CreateProduct
+      parameters: []
+      requestBody:
+        content:
+          multipart/form-data:
+            encoding: {}
+            schema:
+              required:
+                - image
+                - name
+                - price
+                - details
+              type: object
+              properties:
+                image:
+                  type: string
+                  format: binary
+                name:
+                  type: string
+                  example: product name
+                price:
+                  type: integer
+                  format: int32
+                  example: 50
+                details:
+                  type: string
+                  example: "asd fdsdf "
+        required: false
+      responses:
+        "200":
+          description: ""
+          headers: {}
+      deprecated: false
+    get:
+      tags:
+        - Product
+      summary: All Products
+      operationId: AllProducts
+      parameters:
+        - name: page
+          in: query
+          description: ""
+          required: true
+          style: form
+          explode: true
+          schema:
+            type: integer
+            format: int32
+            example: 1
+        - name: limit
+          in: query
+          description: ""
+          required: true
+          style: form
+          explode: true
+          schema:
+            type: integer
+            format: int32
+            example: 1
+      responses:
+        "200":
+          description: ""
+          headers: {}
+      deprecated: false
+      security: []
+  /product/{id}:
+    parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+        required: true
+        description: The product ID
+    post:
+      tags:
+        - Product
+      summary: Update Product
+      operationId: UpdateProduct
+      parameters: []
+      requestBody:
+        content:
+          multipart/form-data:
+            encoding: {}
+            schema:
+              required:
+                - name
+                - price
+                - details
+              type: object
+              properties:
+                image:
+                  type: string
+                  format: binary
+                name:
+                  type: string
+                  example: product name Up
+                price:
+                  type: integer
+                  format: int32
+                  example: 60
+                details:
+                  type: string
+                  example: asd fdsdf 123
+        required: false
+      responses:
+        "200":
+          description: ""
+          headers: {}
+      deprecated: false
+    get:
+      tags:
+        - Product
+      summary: Product by Id
+      operationId: ProductbyId
+      parameters: []
+      responses:
+        "200":
+          description: ""
+          headers: {}
+      deprecated: false
+      security: []
+  /order:
+    post:
+      tags:
+        - Order
+      summary: Create Order
+      operationId: CreateOrder
+      parameters: []
+      requestBody:
+        description: ""
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: "#/components/schemas/CreateOrderRequest"
+                - example:
+                    productId: 62f3c904b0339285f16e3d44
+            example:
+              productId: 62f3c904b0339285f16e3d44
+        required: true
+      responses:
+        "200":
+          description: ""
+          headers: {}
+      deprecated: false
+    get:
+      tags:
+        - Order
+      summary: User Orders
+      operationId: UserOrders
+      parameters: []
+      responses:
+        "200":
+          description: ""
+          headers: {}
+      deprecated: false
+  /order/details/{id}:
+    parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+        required: true
+        description: The order ID
+    post:
+      tags:
+        - Order
+      summary: Add Order Details
+      operationId: AddOrderDetails
+      parameters: []
+      requestBody:
+        description: ""
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: "#/components/schemas/AddOrderDetailsRequest"
+                - example:
+                    paymentDetails: asd fdg vcbc
+            example:
+              paymentDetails: asd fdg vcbc
+        required: true
+      responses:
+        "200":
+          description: ""
+          headers: {}
+      deprecated: false
+  /order/{id}:
+    parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+        required: true
+        description: The order ID
+    get:
+      tags:
+        - Order
+      summary: Order by Id
+      operationId: OrderbyId
+      parameters: []
+      responses:
+        "200":
+          description: ""
+          headers: {}
+      deprecated: false
+  /order/adm/{id}:
+    parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+        required: true
+        description: The order ID
+    get:
+      tags:
+        - Order
+      summary: Order by Id Admin
+      operationId: OrderbyIdAdmin
+      parameters: []
+      responses:
+        "200":
+          description: ""
+          headers: {}
+      deprecated: false
+  /order/adm:
+    get:
+      tags:
+        - Order
+      summary: Orders Admin
+      operationId: OrdersAdmin
+      parameters:
+        - name: page
+          in: query
+          description: ""
+          required: true
+          style: form
+          explode: true
+          schema:
+            type: integer
+            format: int32
+            example: 1
+        - name: limit
+          in: query
+          description: ""
+          required: true
+          style: form
+          explode: true
+          schema:
+            type: integer
+            format: int32
+            example: 10
+      responses:
+        "200":
+          description: ""
+          headers: {}
+      deprecated: false
+  /order/status/{id}:
+    parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+        required: true
+        description: The order ID
+    post:
+      tags:
+        - Order
+      summary: Change Order Status Admin
+      operationId: ChangeOrderStatusAdmin
+      parameters: []
+      requestBody:
+        description: ""
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: "#/components/schemas/ChangeOrderStatusAdminRequest"
+                - example:
+                    statusCode: 3
+            example:
+              statusCode: 3
+        required: true
+      responses:
+        "200":
+          description: ""
+          headers: {}
+      deprecated: false
+  /blog:
+    post:
+      tags:
+        - Blog
+      summary: Create Blog with Image
+      operationId: CreateBlogwithImage
+      parameters: []
+      requestBody:
+        content:
+          multipart/form-data:
+            encoding: {}
+            schema:
+              required:
+                - image
+                - title
+                - body
+              type: object
+              properties:
+                image:
+                  type: string
+                  format: binary
+                title:
+                  type: integer
+                  format: int32
+                  example: 12348524
+                body:
+                  type: string
+                  example: Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Sed blandit libero volutpat sed cras ornare arcu dui vivamus. Amet est placerat in egestas erat imperdiet sed. Mauris augue neque gravida in fermentum et sollicitudin. Ipsum dolor sit amet consectetur adipiscing. Bibendum neque egestas congue quisque egestas diam in. Mattis aliquam faucibus purus in massa tempor nec feugiat nisl. Eget gravida cum sociis natoque penatibus et magnis. Praesent elementum facilisis leo vel. Enim ut sem viverra aliquet eget sit amet tellus cras. At varius vel pharetra vel turpis nunc eget lorem. Condimentum vitae sapien
+        required: false
+      responses:
+        "200":
+          description: ""
+          headers: {}
+      deprecated: false
+    get:
+      tags:
+        - Blog
+      summary: All Blogs
+      operationId: AllBlogs
+      parameters: []
+      responses:
+        "200":
+          description: ""
+          headers: {}
+      deprecated: false
+      security: []
+  /blog/{id}:
+    parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+        required: true
+        description: The blog ID
+    post:
+      tags:
+        - Blog
+      summary: Update Blog with Image
+      operationId: UpdateBlogwithImage
+      parameters: []
+      requestBody:
+        content:
+          multipart/form-data:
+            encoding: {}
+            schema:
+              required:
+                - title
+                - body
+              type: object
+              properties:
+                title:
+                  type: string
+                  example: 1234+8524
+                body:
+                  type: string
+                  example: Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Sed blandit libero volutpat sed cras ornare arcu dui vivamus. Amet est placerat in egestas erat imperdiet sed. Mauris augue neque gravida in fermentum et sollicitudin. Ipsum dolor sit amet consectetur adipiscing. Bibendum neque egestas congue quisque egestas diam in. Mattis aliquam faucibus purus in massa tempor nec feugiat nisl. Eget gravida cum sociis natoque penatibus et magnis. Praesent elementum facilisis leo vel. Enim ut sem viverra aliquet eget sit amet tellus cras. At varius vel pharetra vel turpis nunc eget lorem. Condimentum vitae sapien
+                image:
+                  type: string
+                  format: binary
+        required: false
+      responses:
+        "200":
+          description: ""
+          headers: {}
+      deprecated: false
+  /blog/{id_}:
+    parameters:
+      - in: path
+        name: id_
+        schema:
+          type: string
+        required: true
+        description: The blog ID
+    get:
+      tags:
+        - Blog
+      summary: Blog
+      operationId: Blog
+      parameters: []
+      responses:
+        "200":
+          description: ""
+          headers: {}
+      deprecated: false
+      security: []
+    delete:
+      tags:
+        - Blog
+      summary: Blog1
+      operationId: Blog1
+      parameters: []
+      responses:
+        "200":
+          description: ""
+          headers: {}
+      deprecated: false
+  /recommendation:
+    post:
+      tags:
+        - Recommendation
+      summary: Create Recommendation
+      operationId: CreateRecommendation
+      parameters: []
+      requestBody:
+        description: ""
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: "#/components/schemas/CreateRecommendationRequest"
+                - example:
+                    name: USD/EUR
+                    price: "1.258"
+                    tp1: asdf ';lk
+                    tp2: asdf ';lk
+                    tp3: asdf ';lk
+                    sl: asdf ';lk
+                    status: sell
+            example:
+              name: USD/EUR
+              price: "1.258"
+              tp1: asdf ';lk
+              tp2: asdf ';lk
+              tp3: asdf ';lk
+              sl: asdf ';lk
+              status: sell
+        required: true
+      responses:
+        "200":
+          description: ""
+          headers: {}
+      deprecated: false
+    get:
+      tags:
+        - Recommendation
+      summary: All Recommendation
+      operationId: AllRecommendation
+      parameters:
+        - name: page
+          in: query
+          description: ""
+          required: true
+          style: form
+          explode: true
+          schema:
+            type: integer
+            format: int32
+            example: 1
+        - name: limit
+          in: query
+          description: ""
+          required: true
+          style: form
+          explode: true
+          schema:
+            type: integer
+            format: int32
+            example: 10
+      responses:
+        "200":
+          description: ""
+          headers: {}
+      deprecated: false
+      security: []
+  /recommendation/{id}:
+    parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+        required: true
+        description: The recommendation ID
+    post:
+      tags:
+        - Recommendation
+      summary: Update Recommendation
+      operationId: UpdateRecommendation
+      parameters: []
+      requestBody:
+        description: ""
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: "#/components/schemas/UpdateRecommendationRequest"
+                - example:
+                    name: USD/EURR
+                    price: "1.258"
+                    tp1: asdf ';lk
+                    tp2: asdf ';lk
+                    tp3: asdf ';lk
+                    sl: asdf ';lk
+                    status: sell
+            example:
+              name: USD/EURR
+              price: "1.258"
+              tp1: asdf ';lk
+              tp2: asdf ';lk
+              tp3: asdf ';lk
+              sl: asdf ';lk
+              status: sell
+        required: true
+      responses:
+        "200":
+          description: ""
+          headers: {}
+      deprecated: false
+    get:
+      tags:
+        - Recommendation
+      summary: Recommendation
+      operationId: Recommendation
+      parameters: []
+      responses:
+        "200":
+          description: ""
+          headers: {}
+      deprecated: false
+      security: []
+    delete:
+      tags:
+        - Recommendation
+      summary: Recommendation1
+      operationId: Recommendation1
+      parameters: []
+      responses:
+        "200":
+          description: ""
+          headers: {}
+      deprecated: false
+  /email/send:
+    post:
+      tags:
+        - Email
+      summary: Send Email
+      operationId: SendEmail
+      parameters: []
+      requestBody:
+        description: ""
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: "#/components/schemas/SendEmailRequest"
+                - example:
+                    to: test@test.com
+                    subject: title
+                    html: <h1>hello</h1>
+            example:
+              to: test@test.com
+              subject: title
+              html: <h1>hello</h1>
+        required: true
+      responses:
+        "200":
+          description: ""
+          headers: {}
+      deprecated: false
+  /email/template:
+    post:
+      tags:
+        - Email
+      summary: Create Email Template
+      operationId: CreateEmailTemplate
+      parameters: []
+      requestBody:
+        description: ""
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: "#/components/schemas/CreateEmailTemplateRequest"
+                - example:
+                    name: new timplate
+                    html: <h1>hello</h1>
+            example:
+              name: new timplate
+              html: <h1>hello</h1>
+        required: true
+      responses:
+        "200":
+          description: ""
+          headers: {}
+      deprecated: false
+    get:
+      tags:
+        - Email
+      summary: Get All Template
+      operationId: GetAllTemplate
+      parameters: []
+      responses:
+        "200":
+          description: ""
+          headers: {}
+      deprecated: false
+  /email/template/{id}:
+    parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+        required: true
+        description: The email template ID
+    post:
+      tags:
+        - Email
+      summary: Edit Email Template
+      operationId: EditEmailTemplate
+      parameters: []
+      requestBody:
+        description: ""
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: "#/components/schemas/EditEmailTemplateRequest"
+                - example:
+                    name: new timplateee
+                    html: <h1>hello1</h1>
+            example:
+              name: new timplateee
+              html: <h1>hello1</h1>
+        required: true
+      responses:
+        "200":
+          description: ""
+          headers: {}
+      deprecated: false
+    get:
+      tags:
+        - Email
+      summary: Get Template
+      operationId: GetTemplate
+      parameters: []
+      responses:
+        "200":
+          description: ""
+          headers: {}
+      deprecated: false
+    delete:
+      tags:
+        - Email
+      summary: Template
+      operationId: Template
+      parameters: []
+      responses:
+        "200":
+          description: ""
+          headers: {}
+      deprecated: false
+  /setting/available:
+    get:
+      tags:
+        - Settings
+      summary: Service Availability
+      operationId: ServiceAvailability
+      parameters: []
+      responses:
+        "200":
+          description: ""
+          headers: {}
+      deprecated: false
+    post:
+      tags:
+        - Settings
+      summary: Set Service Availability
+      operationId: SetServiceAvailability
+      parameters: []
+      requestBody:
+        description: ""
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: "#/components/schemas/SetServiceAvailabilityRequest"
+                - example:
+                    available: false
+            example:
+              available: false
+        required: true
+      responses:
+        "200":
+          description: ""
+          headers: {}
+      deprecated: false
+  /setting/transactionExpiration:
+    get:
+      tags:
+        - Settings
+      summary: Transaction Expiration
+      operationId: TransactionExpiration
+      parameters: []
+      responses:
+        "200":
+          description: ""
+          headers: {}
+      deprecated: false
+    post:
+      tags:
+        - Settings
+      summary: Transaction Expiration
+      operationId: PostTransactionExpiration
+      parameters: []
+      requestBody:
+        description: ""
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: "#/components/schemas/TransactionExpirationRequest"
+                - example:
+                    transactionExpiration: 3
+            example:
+              transactionExpiration: 3
+        required: true
+      responses:
+        "200":
+          description: ""
+          headers: {}
+      deprecated: false
+  /setting/affiliateRate:
+    get:
+      tags:
+        - Settings
+      summary: Affiliate Rate
+      operationId: AffiliateRate
+      parameters: []
+      responses:
+        "200":
+          description: ""
+          headers: {}
+      deprecated: false
+    post:
+      tags:
+        - Settings
+      summary: Affiliate Rate
+      operationId: PostAffiliateRate
+      parameters: []
+      requestBody:
+        description: ""
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: "#/components/schemas/AffiliateRateRequest"
+                - example:
+                    affiliateRate: 0.3
+            example:
+              affiliateRate: 0.3
+        required: true
+      responses:
+        "200":
+          description: ""
+          headers: {}
+      deprecated: false
+  /affiliate/deposit:
+    post:
+      tags:
+        - Affiliate
+      summary: Deposit Account
+      operationId: DepositAccount
+      parameters: []
+      requestBody:
+        description: ""
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: "#/components/schemas/DepositAccountRequest"
+                - example:
+                    userId: 62e53dd987c267a97263941d
+                    amount: 34
+            example:
+              userId: 62e53dd987c267a97263941d
+              amount: 34
+        required: true
+      responses:
+        "200":
+          description: ""
+          headers: {}
+      deprecated: false
+  /affiliate/withdraw:
+    post:
+      tags:
+        - Affiliate
+      summary: Withdraw Account
+      operationId: WithdrawAccount
+      parameters: []
+      requestBody:
+        description: ""
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: "#/components/schemas/WithdrawAccountRequest"
+                - example:
+                    userId: 630f2060e9cf32c9b7c3ab31
+                    amount: 1
+            example:
+              userId: 630f2060e9cf32c9b7c3ab31
+              amount: 1
+        required: true
+      responses:
+        "200":
+          description: ""
+          headers: {}
+      deprecated: false
+  /affiliate/{id}:
+    parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+        required: true
+        description: The user ID
+    get:
+      tags:
+        - Affiliate
+      summary: Account Admin
+      operationId: AccountAdmin
+      parameters: []
+      responses:
+        "200":
+          description: ""
+          headers: {}
+      deprecated: false
+  /affiliate:
+    get:
+      tags:
+        - Affiliate
+      summary: User Affiliate Account
+      operationId: UserAffiliateAccount
+      parameters: []
+      responses:
+        "200":
+          description: ""
+          headers: {}
+      deprecated: false
+components:
+  schemas:
+    LoginUserRequest:
+      title: LoginUserRequest
+      required:
+        - email
+        - password
+      type: object
+      properties:
+        email:
+          type: string
+        password:
+          type: string
+      example:
+        email: test@test.com
+        password: "123456"
+    LogoutUserRequest:
+      title: LogoutUserRequest
+      required:
+        - email
+        - password
+      type: object
+      properties:
+        email:
+          type: string
+        password:
+          type: string
+      example:
+        email: test@test.com
+        password: "123456"
+    VerifyEmailRequest:
+      title: VerifyEmailRequest
+      required:
+        - email
+        - verificationToken
+      type: object
+      properties:
+        email:
+          type: string
+        verificationToken:
+          type: string
+      example:
+        email: test@test.com
+        verificationToken: 055ee337407a272f3b393a740013d0ea22338a8da0a7e05293eb60dda836c4007ddd236f00ffadea
+    ForgotPasswordRequest:
+      title: ForgotPasswordRequest
+      required:
+        - email
+      type: object
+      properties:
+        email:
+          type: string
+      example:
+        email: test@test.com
+    ResetPasswordRequest:
+      title: ResetPasswordRequest
+      required:
+        - token
+        - email
+        - password
+      type: object
+      properties:
+        token:
+          type: string
+        email:
+          type: string
+        password:
+          type: string
+      example:
+        token: 4078b45e72746d26a252c834e2cbeadea57f8cd5a37193d964e4405654dfd8c2368b10e566c033966ce48e330db5d0dac82c3efc36c762d7ad59b50a088f1175d965630f8b4c
+        email: test@test.com
+        password: "1234567"
+    UpdateUserPasswordRequest:
+      title: UpdateUserPasswordRequest
+      required:
+        - oldPassword
+        - newPassword
+      type: object
+      properties:
+        oldPassword:
+          type: string
+        newPassword:
+          type: string
+      example:
+        oldPassword: "123456"
+        newPassword: "1234567"
+    UpdateUserPasswordAdminRequest:
+      title: UpdateUserPasswordAdminRequest
+      required:
+        - newPassword
+      type: object
+      properties:
+        newPassword:
+          type: string
+      example:
+        newPassword: "123456"
+    ActivateUserRequest:
+      title: ActivateUserRequest
+      required:
+        - isActive
+      type: object
+      properties:
+        isActive:
+          type: boolean
+      example:
+        isActive: true
+    ActivateCurrencyRequest:
+      title: ActivateCurrencyRequest
+      required:
+        - isActive
+      type: object
+      properties:
+        isActive:
+          type: boolean
+      example:
+        isActive: false
+    CreateExchangeDirectionRequest:
+      title: CreateExchangeDirectionRequest
+      required:
+        - from
+        - to
+        - exchangeRate
+        - minExchange
+        - maxExchange
+        - description
+        - isActive
+      type: object
+      properties:
+        from:
+          type: string
+        to:
+          type: string
+        exchangeRate:
+          allOf:
+            - $ref: "#/components/schemas/ExchangeRate"
+            - {}
+        minExchange:
+          type: string
+        maxExchange:
+          type: string
+        description:
+          type: string
+        isActive:
+          type: boolean
+      example:
+        from: 62e4c4a5bb77243116e4c386
+        to: 62e4c4d1bb77243116e4c389
+        exchangeRate:
+          send: "1"
+          receive: "1.05"
+        minExchange: "100"
+        maxExchange: "500"
+        description: " "
+        isActive: true
+    ExchangeRate:
+      title: ExchangeRate
+      required:
+        - send
+        - receive
+      type: object
+      properties:
+        send:
+          type: string
+        receive:
+          type: string
+      example:
+        send: "1"
+        receive: "1.05"
+    UpdateExchangeDirectionRequest:
+      title: UpdateExchangeDirectionRequest
+      required:
+        - from
+        - to
+        - exchangeRate
+        - minExchange
+        - maxExchange
+        - description
+        - isActive
+      type: object
+      properties:
+        from:
+          type: string
+        to:
+          type: string
+        exchangeRate:
+          allOf:
+            - $ref: "#/components/schemas/ExchangeRate"
+            - {}
+        minExchange:
+          type: string
+        maxExchange:
+          type: string
+        description:
+          type: string
+        isActive:
+          type: boolean
+      example:
+        from: 62e4c4a5bb77243116e4c386
+        to: 62ef5af171bf7efa0ec50317
+        exchangeRate:
+          send: "1"
+          receive: "2.05"
+        minExchange: "100"
+        maxExchange: "500"
+        description: " "
+        isActive: true
+    ActivateExchangeDirectionRequest:
+      title: ActivateExchangeDirectionRequest
+      required:
+        - isActive
+      type: object
+      properties:
+        isActive:
+          type: boolean
+      example:
+        isActive: true
+    CreateTransactionRequest:
+      title: CreateTransactionRequest
+      required:
+        - from
+        - to
+        - amount
+      type: object
+      properties:
+        from:
+          type: string
+        to:
+          type: string
+        amount:
+          type: string
+      example:
+        from: 62e4c4a5bb77243116e4c386
+        to: 62e4c4d1bb77243116e4c389
+        amount: "181"
+    ChangeTransactionStatusRequest:
+      title: ChangeTransactionStatusRequest
+      required:
+        - statusCode
+      type: object
+      properties:
+        statusCode:
+          type: integer
+          format: int32
+      example:
+        statusCode: 5
+    CreateOrderRequest:
+      title: CreateOrderRequest
+      required:
+        - productId
+      type: object
+      properties:
+        productId:
+          type: string
+      example:
+        productId: 62f3c904b0339285f16e3d44
+    AddOrderDetailsRequest:
+      title: AddOrderDetailsRequest
+      required:
+        - paymentDetails
+      type: object
+      properties:
+        paymentDetails:
+          type: string
+      example:
+        paymentDetails: asd fdg vcbc
+    ChangeOrderStatusAdminRequest:
+      title: ChangeOrderStatusAdminRequest
+      required:
+        - statusCode
+      type: object
+      properties:
+        statusCode:
+          type: integer
+          format: int32
+      example:
+        statusCode: 3
+    CreateRecommendationRequest:
+      title: CreateRecommendationRequest
+      required:
+        - name
+        - price
+        - tp1
+        - tp2
+        - tp3
+        - sl
+        - status
+      type: object
+      properties:
+        name:
+          type: string
+        price:
+          type: string
+        tp1:
+          type: string
+        tp2:
+          type: string
+        tp3:
+          type: string
+        sl:
+          type: string
+        status:
+          type: string
+      example:
+        name: USD/EUR
+        price: "1.258"
+        tp1: asdf ';lk
+        tp2: asdf ';lk
+        tp3: asdf ';lk
+        sl: asdf ';lk
+        status: sell
+    UpdateRecommendationRequest:
+      title: UpdateRecommendationRequest
+      required:
+        - name
+        - price
+        - tp1
+        - tp2
+        - tp3
+        - sl
+        - status
+      type: object
+      properties:
+        name:
+          type: string
+        price:
+          type: string
+        tp1:
+          type: string
+        tp2:
+          type: string
+        tp3:
+          type: string
+        sl:
+          type: string
+        status:
+          type: string
+      example:
+        name: USD/EURR
+        price: "1.258"
+        tp1: asdf ';lk
+        tp2: asdf ';lk
+        tp3: asdf ';lk
+        sl: asdf ';lk
+        status: sell
+    SendEmailRequest:
+      title: SendEmailRequest
+      required:
+        - to
+        - subject
+        - html
+      type: object
+      properties:
+        to:
+          type: string
+        subject:
+          type: string
+        html:
+          type: string
+      example:
+        to: test@test.com
+        subject: title
+        html: <h1>hello</h1>
+    CreateEmailTemplateRequest:
+      title: CreateEmailTemplateRequest
+      required:
+        - name
+        - html
+      type: object
+      properties:
+        name:
+          type: string
+        html:
+          type: string
+      example:
+        name: new timplate
+        html: <h1>hello</h1>
+    EditEmailTemplateRequest:
+      title: EditEmailTemplateRequest
+      required:
+        - name
+        - html
+      type: object
+      properties:
+        name:
+          type: string
+        html:
+          type: string
+      example:
+        name: new timplateee
+        html: <h1>hello1</h1>
+    SetServiceAvailabilityRequest:
+      title: SetServiceAvailabilityRequest
+      required:
+        - available
+      type: object
+      properties:
+        available:
+          type: boolean
+      example:
+        available: false
+    TransactionExpirationRequest:
+      title: TransactionExpirationRequest
+      required:
+        - transactionExpiration
+      type: object
+      properties:
+        transactionExpiration:
+          type: integer
+          format: int32
+      example:
+        transactionExpiration: 3
+    AffiliateRateRequest:
+      title: AffiliateRateRequest
+      required:
+        - affiliateRate
+      type: object
+      properties:
+        affiliateRate:
+          type: number
+      example:
+        affiliateRate: 0.3
+    DepositAccountRequest:
+      title: DepositAccountRequest
+      required:
+        - userId
+        - amount
+      type: object
+      properties:
+        userId:
+          type: string
+        amount:
+          type: integer
+          format: int32
+      example:
+        userId: 62e53dd987c267a97263941d
+        amount: 34
+    WithdrawAccountRequest:
+      title: WithdrawAccountRequest
+      required:
+        - userId
+        - amount
+      type: object
+      properties:
+        userId:
+          type: string
+        amount:
+          type: integer
+          format: int32
+      example:
+        userId: 630f2060e9cf32c9b7c3ab31
+        amount: 1
+  securitySchemes:
+    httpBearer:
+      type: http
+      scheme: bearer
+security:
+  - httpBearer: []
+tags:
+  - name: Auth
+  - name: User
+  - name: Currency
+  - name: Exhange Direction
+  - name: Transaction
+  - name: Product
+  - name: Order
+  - name: Blog
+  - name: Recommendation
+  - name: Email
+  - name: Settings
+  - name: Affiliate
